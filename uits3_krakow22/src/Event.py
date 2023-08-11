@@ -1,7 +1,7 @@
 from uits3_krakow22.src.Vertex import Vertex
 
 class Event:
-    def __init__(self,timestamp = None,clusters = None,tracks = None,vertex = None,dca=None):
+    def __init__(self,timestamp = None,clusters = None,tracks = None,vertex = None,meanClusterSize = None, dca=None):
         if timestamp : self.timestamp = timestamp
         else : self.timestamp = 0
         
@@ -14,6 +14,9 @@ class Event:
         if vertex : self.vertex = vertex
         else : self.vertex = []
 
+        if meanClusterSize : self.meanClusterSize = meanClusterSize
+        else : self.meanClusterSize = 0 
+            
         if dca : self.dca = dca
         else : self.dca = -1
 
@@ -42,3 +45,10 @@ class Event:
 
     def calculateVertex(self):
         self.vertex = Vertex().fromTracks(self.tracks)
+        
+    def calculateMeanClusterSize(self):
+        clusterSizeSum = 0
+        for cluster in self.clusters: 
+            clusterSizeSum+=cluster.size
+        meanClusterSize = clusterSizeSum/len(self.clusters)
+        self.meanClusterSize = clusterSizeSum/len(self.clusters)

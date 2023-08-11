@@ -164,14 +164,67 @@ class Cluster:
         self.globalPos = globalPosUpdated
         return self
 
+    #BEGIN WIP
+    
+    
+    
+#        def shiftXaxis(self, detector, xshift, angle_or_arclength):
+#        if self.detector == detector:
+#            globalPosUpdated = [0,0,0]
+#            R = math.sqrt(self.globalPos[0]**2+self.globalPos[1]**2)
+#            if(angle_or_arclength == "angle"):
+#                self.localPos[0] += R*xshift*math.pi/180 #when xshift=0 should add 0 and then not change anything
+#            else:
+#                self.localPos[0] += xshift
+#
+#            globalPosUpdated[0]= -R*math.cos((self.localPos[0])/(R)) #global x (check, I think this shouldnt have -sign)
+#            globalPosUpdated[1]= -R*math.sin((self.localPos[0])/(R)) #global y
+#            globalPosUpdated[2]=  self.globalPos[2]                  #global z
+#
+#            self.globalPos = globalPosUpdated
+#
+#        return self
+    
+    
+    def twistTopDown(self, angle):
+        #get global coords of alpide centre (could consider center after displacement but for now before may be sufficient)
+        #we now rotate about the global center by angle        
+        #in order to find the center, we can take the local coordinate origin and compare with global coordinate of alpide center given which alpide the cluster lies on
+        
+        #try: shifting local y: newLocaly= oldY
+        angle=float(angle)
+        globalPosUpdated = self.globalPos      
+        globalPosUpdated[2] *= math.cos((angle*math.pi / 180))
+        globalPosUpdated[0] += self.globalPos[2]* math.sin((angle*math.pi / 180))
+        
+        self.globalPos = globalPosUpdated
+        return self
+    
+    def twistLeftRight(self, angle):
+        #get global coords of alpide centre (could consider center after displacement but for now before may be sufficient)
+        #we now rotate about the global center by angle        
+        #in order to find the center, we can take the local coordinate origin and compare with global coordinate of alpide center given which alpide the cluster lies on
+        
+        #try: shifting local y: newLocaly= oldY
+        angle=float(angle)
+        globalPosUpdated = self.globalPos      
+        globalPosUpdated[2] -= self.localPos[2]* math.cos((angle*math.pi / 180))
+        globalPosUpdated[1] += self.localPos[1]* math.sin((angle*math.pi / 180))
+        
+        self.globalPos = globalPosUpdated
+        return self
+    
+    
+    #END WIP
+    
     def flipYaxis(self):
         globalPosUpdated = [0,0,0]
         R = math.sqrt(self.globalPos[0]**2+self.globalPos[1]**2)
 
         self.localPos[1] = -self.localPos[1] 
 
-        globalPosUpdated[0]=  R*math.cos((self.localPos[0])/(R)) #global x
-        globalPosUpdated[1]= -R*math.sin((self.localPos[0])/(R)) #global y
+        globalPosUpdated[0]=  R*math.cos((self.localPos[0])/(R))      #global x
+        globalPosUpdated[1]= -R*math.sin((self.localPos[0])/(R))      #global y
         globalPosUpdated[2]=  self.globalPos[2] + 2*self.localPos[1]  #global z
 
         if self.detector in ["ALPIDE_0","ALPIDE_1","ALPIDE_2"]:
@@ -181,6 +234,25 @@ class Cluster:
         self.globalPos = globalPosUpdated
 
         return self
+    
+    
+    def shiftXaxis(self, detector, xshift, angle_or_arclength):
+        if self.detector == detector:
+            globalPosUpdated = [0,0,0]
+            R = math.sqrt(self.globalPos[0]**2+self.globalPos[1]**2)
+            if(angle_or_arclength == "angle"):
+                self.localPos[0] += R*xshift*math.pi/180 #when xshift=0 should add 0 and then not change anything
+            else:
+                self.localPos[0] += xshift
+
+            globalPosUpdated[0]= -R*math.cos((self.localPos[0])/(R)) #global x (check, I think this shouldnt have -sign)
+            globalPosUpdated[1]= -R*math.sin((self.localPos[0])/(R)) #global y
+            globalPosUpdated[2]=  self.globalPos[2]                  #global z
+
+            self.globalPos = globalPosUpdated
+
+        return self
+    
     #def getPositio
     #def applyCorrection(self,geometry):
 

@@ -8,6 +8,9 @@ class Track:
         if vector : self.vector = vector
         else : self.vector = [1,0,0]
 
+        #if unitVector : self.unitVector = unitVector
+        #else : self.unitVector = [1,0,0]
+            
         if line : self.line = line
         else : self.line = Line(point=self.point, direction=self.vector)
 
@@ -33,5 +36,24 @@ class Track:
         else:
             raise Exception("Not enough clusters to construct track: #clusters = "+len(clusters))
 
+ #   def calcUnitVector:
+  #      magnitude=sqrt(vector[0]**2 + vector[1]**2 + vector[2]**2)
+   #     for coord, vecVal enumerate(self.vector):
+    #        self.unitVector[coord]=vecVal/magnitude
+     #   return unitVector
+           
     def propagate2point(self,point):
         return self.line.project_point(point)
+    
+  #  def pathThroughDet(self,ALPIDE): #WIP may not cancel this
+    #    detThick=0.025 #25 micron detector in mm
+    #    radius = [
+    #    "ALPIDE_0" : 30,
+    #    "ALPIDE_1" : 24,
+    #    "ALPIDE_2" : 18,
+     #   "ALPIDE_3" : 18,
+     #   "ALPIDE_4" : 30,
+     #   ]
+        
+        
+    
