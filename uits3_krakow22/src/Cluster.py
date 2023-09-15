@@ -138,7 +138,7 @@ class Cluster:
     def alignLocal(self, localDisplacement):
 
         globalPosUpdated = [0,0,0]
-        R = math.sqrt(self.globalPos[0]**2+self.globalPos[1]**2)
+        R = math.sqrt(self.globalPos[0]**2+self.globalPos[1]**2)+localDisplacement[2] #localDisplacement[2] should be radial perturbation
 
         self.localPos[0] += localDisplacement[0]
         self.localPos[1] += localDisplacement[1]
